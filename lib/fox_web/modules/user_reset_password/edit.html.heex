@@ -1,0 +1,20 @@
+<.container>
+  <div class="py-16 mx-auto max-w-sm">
+    <h1 class="text-3xl font-extrabold text-gray-900">Reset password</h1>
+    <p class="mt-2 text-sm text-gray-700">
+      <.link class="font-medium text-blue-600 hover:underline" navigate={Routes.live_path(@socket, UserSessionLive)}>
+        Sign in
+      </.link>
+      if you remember your password.
+    </p>
+
+    <.form let={f} for={@changeset} phx-submit="reset_password" class="space-y-6 mt-6">
+      <.form_input form={f} field={:password} type={:password} required="true" />
+      <.form_input form={f} field={:password_confirmation} type={:password} required="true" />
+
+      <div>
+        <.button class="w-full">Reset password</.button>
+      </div>
+    </.form>
+  </div>
+</.container>

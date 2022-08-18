@@ -1,0 +1,27 @@
+<.container>
+  <div class="py-16 mx-auto max-w-sm">
+    <h1 class="text-3xl font-extrabold text-gray-900">Sign in</h1>
+    <p class="mt-2 text-sm text-gray-700">Don't have an account? <.link class="font-medium text-blue-600 hover:underline" navigate={Routes.live_path(@socket, UserRegistrationLive)}>Sign up</.link> for a free account.</p>
+
+    <.form let={f} for={:user} action={Routes.user_session_path(@socket, :create)} class="space-y-6">
+      <%= if @error_message do %>
+        <.alert>
+          <%= @error_message %>
+        </.alert>
+      <% end %>
+
+      <.form_input form={f} field={:email} type={:email} required="true" />
+      <.form_input form={f} field={:password} type={:password} required="true" />
+      <div class="flex justify-between">
+        <.form_input form={f} field={:remember_me} type={:checkbox} />
+        <.link class="text-sm font-medium text-blue-600 hover:underline" navigate={Routes.user_reset_password_path(@socket, :new)}>
+          Forgot your password?
+        </.link>
+      </div>
+
+      <div>
+        <.button class="w-full">Sign in</.button>
+      </div>
+    </.form>
+  </div>
+</.container>
