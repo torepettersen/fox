@@ -24,9 +24,21 @@ defmodule FoxWeb.FormInputComponent do
     """
   end
 
+  defp form_label(%{label: label} = assigns) do
+    ~H"""
+    <%= label @form, @field, label, class: "block text-sm font-medium text-gray-700" %>
+    """
+  end
+
   defp form_label(assigns) do
     ~H"""
     <%= label @form, @field, class: "block text-sm font-medium text-gray-700" %>
+    """
+  end
+
+  defp input(%{type: :text} = assigns) do
+    ~H"""
+    <%= text_input @form, @field, input_assigns(assigns) %>
     """
   end
 
@@ -47,6 +59,8 @@ defmodule FoxWeb.FormInputComponent do
     <%= checkbox @form, @field, input_assigns(assigns) %>
     """
   end
+
+  defp input(assigns), do: input(Map.put(assigns, :type, :text))
 
   defp input_style(%{type: :checkbox}) do
     "h-4 w-4 mr-2 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"

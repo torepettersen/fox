@@ -42,7 +42,7 @@ defmodule FoxWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {FoxWeb.LayoutView, "live.html"}
+        layout: {FoxWeb.LayoutView, "app.html"}
 
       unquote(view_helpers())
       on_mount FoxWeb.InitAssigns

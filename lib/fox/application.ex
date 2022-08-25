@@ -10,6 +10,8 @@ defmodule Fox.Application do
     children = [
       # Start the Ecto repository
       Fox.Repo,
+      # Services
+      Fox.Nordigen.ClientServer,
       # Start the Telemetry supervisor
       FoxWeb.Telemetry,
       # Start the PubSub system

@@ -23,6 +23,12 @@ defmodule FoxWeb.Router do
     live "/", LandingPageLive
   end
 
+  scope "/", FoxWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live "/banks", BanksLive
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", FoxWeb do
   #   pipe_through :api
@@ -56,6 +62,7 @@ defmodule FoxWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
+
   ## Authentication routes
 
   scope "/", FoxWeb do

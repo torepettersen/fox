@@ -1,0 +1,11 @@
+<.diagonal_box>
+  <div class="p-8 pt-12 w-2/3">
+    <h1 class="text-3xl">Find your bank</h1>
+  </div>
+</.diagonal_box>
+<div class="p-8 pt-4 space-y-6">
+  <.form let={f} for={:params} phx-change="query_banks">
+    <.form_input form={f} field={:query} label={"Search"} />
+  </.form>
+  <.image_list items={@all_banks} title="name" image_url="logo" key="id" on_click="create_requisition" />
+</div>

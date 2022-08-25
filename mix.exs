@@ -50,6 +50,8 @@ defmodule Fox.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
+      {:seqfuzz, "~> 0.2.0"},
+      {:req, github: "torepettersen/req"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:heroicons, "~> 0.3"},
       {:ex_machina, "~> 2.7.0", only: :test},
