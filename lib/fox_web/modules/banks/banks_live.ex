@@ -10,11 +10,14 @@ defmodule FoxWeb.BanksLive do
         banks
       end)
 
+    socket = assign(socket, banks: socket.assigns.all_banks)
+
     {:ok, socket}
   end
 
   def handle_event("query_banks", %{"params" => %{"query" => query}}, socket) do
-    IO.inspect(query)
+    banks = Seqfuzz.filter(socket.assigns.all_banks, query, & &1["name"])
+    socket = assign(socket, banks: banks)
     {:noreply, socket}
   end
 

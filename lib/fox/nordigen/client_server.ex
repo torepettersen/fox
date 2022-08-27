@@ -2,7 +2,6 @@ defmodule Fox.Nordigen.ClientServer do
   use GenServer
 
   @me __MODULE__
-  @mix_env Mix.env()
   @base_url Application.get_env(:fox, :nordigen_base_url)
   @secret_id Application.get_env(:fox, :nordigen_secret_id)
   @secret_key Application.get_env(:fox, :nordigen_secret_key)
@@ -19,11 +18,6 @@ defmodule Fox.Nordigen.ClientServer do
   @impl true
   def init(_args) do
     state = %{client: build_client()}
-
-    if @mix_env != :test do
-      send(@me, :build_client)
-    end
-
     {:ok, state}
   end
 
@@ -62,7 +56,7 @@ defmodule Fox.Nordigen.ClientServer do
     Req.post(client, url: "/token/new/", json: %{secret_id: @secret_id, secret_key: @secret_key})
   end
 
-  defp build_client(attrs \\ nil)
+  defp build_client(token \\ nil)
 
   defp build_client(nil = _token) do
     Req.new(base_url: @base_url)

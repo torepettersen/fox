@@ -25,6 +25,7 @@ defmodule Fox.DataCase do
       import Ecto.Query
       import Fox.DataCase
       import Fox.Factory
+      import Fox.Mocks
     end
   end
 

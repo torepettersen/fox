@@ -1,5 +1,6 @@
 defmodule Fox.Nordigen do
-  import Fox.Nordigen.ClientServer
+  use Mockable.Decorator
+  alias Fox.Nordigen.ClientServer
 
   require Logger
 
@@ -22,12 +23,17 @@ defmodule Fox.Nordigen do
   defp handle_result({:ok, %{status: 404}}, _retry), do: {:error, :not_found}
 
   defp handle_result({:ok, %{status: 401}}, retry) do
-    refresh_client()
+    ClientServer.refresh_client()
     retry.()
   end
 
   defp handle_result(error, _retry) do
     Logger.error("Failed to fetch from Nordigen: #{inspect(error)}")
     {:error, :unknown_error}
+  end
+
+  @decorate mockable()
+  def client do
+    ClientServer.client()
   end
 end

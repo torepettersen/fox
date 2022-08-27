@@ -7,5 +7,5 @@
   <.form let={f} for={:params} phx-change="query_banks">
     <.form_input form={f} field={:query} label={"Search"} />
   </.form>
-  <.image_list items={@all_banks} title="name" image_url="logo" key="id" on_click="create_requisition" />
+  <.image_list items={@banks} title="name" image_url="logo" key="id" on_click="create_requisition" />
 </div>

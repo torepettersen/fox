@@ -3,11 +3,33 @@ defmodule Fox.Application do
   # for more information on OTP Applications
   @moduledoc false
 
+  @mix_env Mix.env()
+
   use Application
 
   @impl true
   def start(_type, _args) do
-    children = [
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: Fox.Supervisor]
+    Supervisor.start_link(children(@mix_env), opts)
+  end
+
+  defp children(:test = _env) do
+    [
+      # Start the Ecto repository
+      Fox.Repo,
+      # Start the Telemetry supervisor
+      FoxWeb.Telemetry,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: Fox.PubSub},
+      # Start the Endpoint (http/https)
+      FoxWeb.Endpoint
+    ]
+  end
+
+  defp children(_env) do
+    [
       # Start the Ecto repository
       Fox.Repo,
       # Services
@@ -18,14 +40,7 @@ defmodule Fox.Application do
       {Phoenix.PubSub, name: Fox.PubSub},
       # Start the Endpoint (http/https)
       FoxWeb.Endpoint
-      # Start a worker by calling: Fox.Worker.start_link(arg)
-      # {Fox.Worker, arg}
     ]
-
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Fox.Supervisor]
-    Supervisor.start_link(children, opts)
   end
 
   # Tell Phoenix to update the endpoint configuration

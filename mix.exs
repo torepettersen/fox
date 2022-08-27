@@ -45,6 +45,7 @@ defmodule Fox.MixProject do
       {:phoenix_live_dashboard, "~> 0.6"},
       {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
+      {:mockable, github: "torepettersen/mockable"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
@@ -55,6 +56,7 @@ defmodule Fox.MixProject do
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:heroicons, "~> 0.3"},
       {:ex_machina, "~> 2.7.0", only: :test},
+      {:bypass, "~> 2.1", only: :test},
       {:rio, github: "torepettersen/rio", only: :dev, runtime: false}
     ]
   end
