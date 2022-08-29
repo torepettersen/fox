@@ -10,9 +10,21 @@ defmodule Fox.Nordigen do
     |> get("/institutions/")
   end
 
+  def create_requisition(attrs) do
+    attrs
+    |> Map.take([:institution_id, :redirect])
+    |> post("/requisitions/")
+  end
+
   defp get(params, path) do
     client()
     |> Req.get(url: path, params: params)
+    |> handle_result(fn -> get(params, path) end)
+  end
+
+  defp post(params, path) do
+    client()
+    |> Req.post(url: path, params: params)
     |> handle_result(fn -> get(params, path) end)
   end
 
