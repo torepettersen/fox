@@ -23,9 +23,12 @@ defmodule Fox.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import Fox.Repo, only: [reload!: 1, reload: 1]
       import Fox.DataCase
       import Fox.Factory
       import Fox.Mocks
+      import Assertions, except: [assert_lists_equal: 2, assert_lists_equal: 3]
+      import Fox.AssertionAdjustments
     end
   end
 

@@ -36,6 +36,7 @@ defmodule Fox.MixProject do
       {:argon2_elixir, "~> 3.0"},
       {:phoenix, "~> 1.6.10"},
       {:phoenix_ecto, "~> 4.4"},
+      {:assertions, "~> 0.19.0", only: :test},
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.0"},

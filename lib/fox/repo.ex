@@ -25,6 +25,9 @@ defmodule Fox.Repo do
     [user_id: get_user_id()]
   end
 
+  def wrap_result(nil = _result), do: {:error, :not_found}
+  def wrap_result(result), do: {:ok, result}
+
   def put_user(user) do
     Process.put(@user_key, user)
   end
