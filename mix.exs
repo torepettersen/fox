@@ -34,31 +34,36 @@ defmodule Fox.MixProject do
   defp deps do
     [
       {:argon2_elixir, "~> 3.0"},
+      {:ecto_sql, "~> 3.6"},
+      {:gettext, "~> 0.18"},
+      {:heroicons, "~> 0.3"},
+      {:jason, "~> 1.2"},
+      {:mockable, github: "torepettersen/mockable"},
       {:phoenix, "~> 1.6.10"},
       {:phoenix_ecto, "~> 4.4"},
-      {:assertions, "~> 0.19.0", only: :test},
-      {:ecto_sql, "~> 3.6"},
-      {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.0"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.17.5"},
-      {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.6"},
-      {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
+      {:phoenix_live_view, "~> 0.17.5"},
+      {:plug_cowboy, "~> 2.5"},
+      {:postgrex, ">= 0.0.0"},
+      {:req, github: "torepettersen/req"},
+      {:sage, "~> 0.6"},
+      {:seqfuzz, "~> 0.2.0"},
       {:swoosh, "~> 1.3"},
-      {:mockable, github: "torepettersen/mockable"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.18"},
-      {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
-      {:seqfuzz, "~> 0.2.0"},
-      {:req, github: "torepettersen/req"},
+
+      # Dev dependencies
+      {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:rio, github: "torepettersen/rio", only: :dev, runtime: false},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
-      {:heroicons, "~> 0.3"},
-      {:ex_machina, "~> 2.7.0", only: :test},
+
+      # Test dependencies
+      {:assertions, "~> 0.19.0", only: :test},
       {:bypass, "~> 2.1", only: :test},
-      {:rio, github: "torepettersen/rio", only: :dev, runtime: false}
+      {:ex_machina, "~> 2.7.0", only: :test},
+      {:floki, ">= 0.30.0", only: :test}
     ]
   end
 

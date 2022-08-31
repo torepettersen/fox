@@ -16,6 +16,22 @@ defmodule Fox.Nordigen do
     |> post("/requisitions/")
   end
 
+  def delete_requisition(id) when is_binary(id) do
+    delete("/requisitions/#{id}/")
+  end
+
+  # https://nordigen.com/en/account_information_documenation/integration/statuses/
+  def map_requisition_status("CR"), do: "created"
+  def map_requisition_status("GC"), do: "giving_consent"
+  def map_requisition_status("UA"), do: "undergoing_authentication"
+  def map_requisition_status("RJ"), do: "rejected"
+  def map_requisition_status("SA"), do: "selecting_accounts"
+  def map_requisition_status("GA"), do: "granting_access"
+  def map_requisition_status("LN"), do: "linked"
+  def map_requisition_status("SU"), do: "suspended"
+  def map_requisition_status("EX"), do: "expired"
+  def map_requisition_status(status), do: status
+
   defp get(params, path) do
     client()
     |> Req.get(url: path, params: params)
@@ -25,7 +41,13 @@ defmodule Fox.Nordigen do
   defp post(params, path) do
     client()
     |> Req.post(url: path, params: params)
-    |> handle_result(fn -> get(params, path) end)
+    |> handle_result(fn -> post(params, path) end)
+  end
+
+  defp delete(path) do
+    client()
+    |> Req.delete(url: path)
+    |> handle_result(fn -> delete(path) end)
   end
 
   defp handle_result({:ok, %{status: status, body: body}}, _retry) when status in [200, 201],
@@ -41,6 +63,7 @@ defmodule Fox.Nordigen do
 
   defp handle_result(error, _retry) do
     Logger.error("Failed to fetch from Nordigen: #{inspect(error)}")
+    IO.inspect(error)
     {:error, :unknown_error}
   end
 
