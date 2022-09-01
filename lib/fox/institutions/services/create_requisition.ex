@@ -13,7 +13,14 @@ defmodule Fox.Institutions.Service.CreateRequisition do
         }
 
   @spec call(attrs) :: {:ok, Requisition.t()}
-  def call(attrs) do
+  def call(%{institution_id: institution_id} = attrs) do
+    case Institutions.fetch_requisition_by(institution_id: institution_id) do
+      {:ok, %Requisition{}} = result -> result
+      _ -> create_requisition(attrs)
+    end
+  end
+
+  defp create_requisition(attrs) do
     attrs = Map.put(attrs, :reference, Ecto.UUID.generate())
 
     new()

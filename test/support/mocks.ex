@@ -30,7 +30,7 @@ defmodule Fox.Mocks do
       id = attrs[:id] || "7993ca30-8dd3-46cb-809f-eb7e7918e939"
       institution_id = attrs[:institution_id] || "NORWEGIAN_NO_NORWNOK1"
 
-      case params do
+      case read_body(conn) do
         %{"redirect" => redirect, "institution_id" => ^institution_id} ->
           json(conn, %{
             id: id,
@@ -95,6 +95,12 @@ defmodule Fox.Mocks do
     conn
     |> Plug.Conn.put_resp_header("content-type", "application/json")
     |> Plug.Conn.resp(status, Jason.encode!(resp))
+  end
+
+  defp read_body(conn) do
+    case Plug.Conn.read_body(conn) do
+      {:ok, body, _conn} -> Jason.decode!(body)
+    end
   end
 
   defp endpoint_url(port), do: "http://localhost:#{port}/"

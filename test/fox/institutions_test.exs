@@ -76,7 +76,7 @@ defmodule Fox.InstitutionsTest do
       assert %Ecto.Changeset{} = Institutions.change_requisition(requisition)
     end
 
-    test "requisitions_count_and_last_updated/1 count and returns oldest last_updated" do
+    test "requisitions_count_and_last_updated/0 count and returns oldest last_updated" do
       now = DateTime.utc_now()
       in_the_past = DateTime.add(now, -3600)
 
@@ -88,14 +88,14 @@ defmodule Fox.InstitutionsTest do
       insert(:requisition, last_updated: nil, user: user)
 
       assert %{count: 3, last_updated: ^in_the_past} =
-               Institutions.requisitions_count_and_last_updated(user)
+               Institutions.requisitions_count_and_last_updated()
     end
 
-    test "requisitions_count_and_last_updated/1 count 0 and returns nil value for last_updated" do
+    test "requisitions_count_and_last_updated/0 count 0 and returns nil value for last_updated" do
       user = insert(:user)
+      Repo.put_user(user)
 
-      assert %{count: 0, last_updated: nil} =
-               Institutions.requisitions_count_and_last_updated(user)
+      assert %{count: 0, last_updated: nil} = Institutions.requisitions_count_and_last_updated()
     end
   end
 end

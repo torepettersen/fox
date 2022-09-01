@@ -40,7 +40,7 @@ defmodule Fox.Nordigen do
 
   defp post(params, path) do
     client()
-    |> Req.post(url: path, params: params)
+    |> Req.post(url: path, json: params)
     |> handle_result(fn -> post(params, path) end)
   end
 
@@ -63,7 +63,6 @@ defmodule Fox.Nordigen do
 
   defp handle_result(error, _retry) do
     Logger.error("Failed to fetch from Nordigen: #{inspect(error)}")
-    IO.inspect(error)
     {:error, :unknown_error}
   end
 

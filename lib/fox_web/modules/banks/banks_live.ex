@@ -2,6 +2,8 @@ defmodule FoxWeb.BanksLive do
   use FoxWeb, :live_view
 
   alias Fox.Nordigen
+  alias Fox.Institutions.Service.CreateRequisition
+  alias Fox.Repo
 
   def mount(_params, _session, socket) do
     socket =
@@ -22,7 +24,15 @@ defmodule FoxWeb.BanksLive do
   end
 
   def handle_event("create_requisition", %{"key" => id}, socket) do
-    IO.inspect(id)
+    {:ok, requisition} =
+      CreateRequisition.call(%{
+        institution_id: id,
+        redirect: "http://localhost:4000",
+        user: Repo.get_user()
+      })
+
+    socket = redirect(socket, external: requisition.link)
+
     {:noreply, socket}
   end
 end
