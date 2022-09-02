@@ -35,6 +35,8 @@ defmodule Fox.MixProject do
     [
       {:argon2_elixir, "~> 3.0"},
       {:ecto_sql, "~> 3.6"},
+      {:ex_money, "~> 5.12"},
+      {:ex_money_sql, "~> 1.7"},
       {:gettext, "~> 0.18"},
       {:heroicons, "~> 0.3"},
       {:jason, "~> 1.2"},
