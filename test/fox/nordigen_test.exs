@@ -14,6 +14,21 @@ defmodule Fox.NordigenTest do
     assert {:ok, [%{} | _]} = Nordigen.list_institutions(%{country: "no"})
   end
 
+  describe "fetch_requisition/1" do
+    test "fetches the requisition", %{bypass: bypass} do
+      id = mock(bypass, :fetch_requisition)
+      {:ok, %{"id" => ^id}} = Nordigen.fetch_requisition(id)
+    end
+
+    test "returns error if not found", %{bypass: bypass} do
+      Bypass.expect(bypass, "GET", "/requisitions/wrong_id/", fn conn ->
+        mock(conn, :not_found)
+      end)
+
+      {:error, :not_found} = Nordigen.fetch_requisition("wrong_id")
+    end
+  end
+
   describe "create_requisition/1" do
     setup %{bypass: bypass} do
       institution_id = "NORWEGIAN_NO_NORWNOK1"
@@ -37,5 +52,54 @@ defmodule Fox.NordigenTest do
       assert {:error, %{}} =
                Nordigen.create_requisition(%{institution_id: "123", redirect: "http://localhost"})
     end
+  end
+
+  describe "fetch_account_details/1" do
+    test "fetches account details", %{bypass: bypass} do
+      id = mock(bypass, :fetch_account_details)
+      {:ok, %{"iban" => _}} = Nordigen.fetch_account_details(id)
+    end
+
+    test "returns error if not found", %{bypass: bypass} do
+      Bypass.expect(bypass, "GET", "/accounts/wrong_id/details/", fn conn ->
+        mock(conn, :not_found)
+      end)
+
+      {:error, :not_found} = Nordigen.fetch_account_details("wrong_id")
+    end
+  end
+
+  describe "fetch_account_balances/1" do
+    test "fetches account balances", %{bypass: bypass} do
+      id = mock(bypass, :fetch_account_balances)
+      {:ok, [%{"balanceAmount" => _}, _, _]} = Nordigen.fetch_account_balances(id)
+    end
+
+    test "returns error if not found", %{bypass: bypass} do
+      Bypass.expect(bypass, "GET", "/accounts/wrong_id/balances/", fn conn ->
+        mock(conn, :not_found)
+      end)
+
+      {:error, :not_found} = Nordigen.fetch_account_balances("wrong_id")
+    end
+  end
+
+  test "fetch_requisition_with_account_data/1", %{bypass: bypass} do
+    account_id = mock(bypass, :fetch_account_details)
+    mock(bypass, :fetch_account_balances, id: account_id)
+    requisition_id = mock(bypass, :fetch_requisition, accounts: [account_id])
+
+    assert {:ok, result} = Nordigen.fetch_requisition_with_account_data(requisition_id)
+
+    assert %{
+             "id" => ^requisition_id,
+             "accounts" => [
+               %{
+                 "id" => ^account_id,
+                 "iban" => _,
+                 "balances" => [%{"balanceAmount" => _} | _]
+               }
+             ]
+           } = result
   end
 end

@@ -10,6 +10,10 @@ defmodule Fox.Nordigen do
     |> get("/institutions/")
   end
 
+  def fetch_requisition(id) when is_binary(id) do
+    get("/requisitions/#{id}/")
+  end
+
   def create_requisition(attrs) do
     attrs
     |> Map.take([:institution_id, :redirect])
@@ -18,6 +22,45 @@ defmodule Fox.Nordigen do
 
   def delete_requisition(id) when is_binary(id) do
     delete("/requisitions/#{id}/")
+  end
+
+  def fetch_account_details(id) when is_binary(id) do
+    case get("/accounts/#{id}/details/") do
+      {:ok, %{"account" => account}} -> {:ok, account}
+      error -> error
+    end
+  end
+
+  def fetch_account_balances(id) when is_binary(id) do
+    case get("/accounts/#{id}/balances/") do
+      {:ok, %{"balances" => balances}} -> {:ok, balances}
+      error -> error
+    end
+  end
+
+  def fetch_requisition_with_account_data(id) when is_binary(id) do
+    with {:ok, requisition} <- fetch_requisition(id),
+         {:ok, accounts} <- fetch_account_data(requisition["accounts"]) do
+      requisition = Map.put(requisition, "accounts", accounts)
+
+      {:ok, requisition}
+    end
+  end
+
+  def fetch_account_data(ids) do
+    Enum.reduce_while(ids, {:ok, []}, fn account_id, {:ok, accounts} ->
+      with {:ok, details} <- fetch_account_details(account_id),
+           {:ok, balances} <- fetch_account_balances(account_id) do
+        account =
+          details
+          |> Map.put("id", account_id)
+          |> Map.put("balances", balances)
+
+        {:cont, {:ok, [account | accounts]}}
+      else
+        error -> {:halt, error}
+      end
+    end)
   end
 
   # https://nordigen.com/en/account_information_documenation/integration/statuses/
@@ -32,7 +75,7 @@ defmodule Fox.Nordigen do
   def map_requisition_status("EX"), do: "expired"
   def map_requisition_status(status), do: status
 
-  defp get(params, path) do
+  defp get(params \\ %{}, path) do
     client()
     |> Req.get(url: path, params: params)
     |> handle_result(fn -> get(params, path) end)
