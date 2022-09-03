@@ -23,6 +23,8 @@ config :fox, FoxWeb.Endpoint,
   pubsub_server: Fox.PubSub,
   live_view: [signing_salt: "lWL26vJE"]
 
+config :ex_cldr, default_backend: Fox.Cldr
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
@@ -49,14 +51,16 @@ config :esbuild,
   ]
 
 # Configure tailwindcss
-config :tailwind, version: "3.1.2", default: [
-  args: ~w(
+config :tailwind,
+  version: "3.1.2",
+  default: [
+    args: ~w(
     --config=tailwind.config.js
     --input=css/app.css
     --output=../priv/static/assets/app.css
   ),
-  cd: Path.expand("../assets", __DIR__)
-]
+    cd: Path.expand("../assets", __DIR__)
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

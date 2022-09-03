@@ -33,7 +33,6 @@ defmodule Fox.Accounts.Account do
   @fields [
     :interim_available_amount,
     :expected_amount,
-    :currency,
     :iban,
     :bban,
     :bic,

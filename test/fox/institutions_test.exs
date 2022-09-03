@@ -20,15 +20,19 @@ defmodule Fox.InstitutionsTest do
       assert [%Requisition{id: ^id}] = Institutions.list_requisitions()
     end
 
-    test "get_requisition!/1 returns the requisition with given id", %{requisition: %{id: id}} do
-      assert %Requisition{id: ^id} = Institutions.get_requisition!(id)
-    end
-
     test "fetch_requisition/1 returns the requisition with given id", %{requisition: %{id: id}} do
-      assert {:ok, %Requisition{id: ^id}} = Institutions.fetch_requisition_by(id: id)
+      assert {:ok, %Requisition{id: ^id}} = Institutions.fetch_requisition(id)
     end
 
     test "fetch_requisition/1 returns error of not found" do
+      assert {:error, :not_found} = Institutions.fetch_requisition(Ecto.UUID.generate())
+    end
+
+    test "fetch_requisition_by/1 returns the requisition with given id", %{requisition: %{id: id}} do
+      assert {:ok, %Requisition{id: ^id}} = Institutions.fetch_requisition_by(id: id)
+    end
+
+    test "fetch_requisition_by/1 returns error of not found" do
       assert {:error, :not_found} = Institutions.fetch_requisition_by(id: Ecto.UUID.generate())
     end
 
@@ -64,7 +68,7 @@ defmodule Fox.InstitutionsTest do
       assert {:error, %Ecto.Changeset{}} =
                Institutions.update_requisition(requisition, @invalid_attrs)
 
-      assert_fields_equal(requisition, Institutions.get_requisition!(requisition.id))
+      assert_fields_equal(requisition, reload!(requisition))
     end
 
     test "delete_requisition/1 deletes the requisition", %{requisition: requisition} do

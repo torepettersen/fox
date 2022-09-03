@@ -5,10 +5,15 @@ defmodule Fox.Institutions.Service.CreateRequisitionTest do
   alias Fox.Nordigen
   alias Fox.Institutions.Requisition
   alias Fox.Institutions.Service.CreateRequisition
+  alias Fox.Repo
 
   setup do
     bypass = setup_bypass(Nordigen, :client)
     mock(bypass, :create_requisition, institution_id: "DNB")
+
+    user = insert(:user)
+    Repo.put_user(user)
+
     %{bypass: bypass}
   end
 
@@ -23,7 +28,7 @@ defmodule Fox.Institutions.Service.CreateRequisitionTest do
   end
 
   test "returns underlaying error" do
-    assert {:error, _} = CreateRequisition.call(%{})
+    assert {:error, _} = CreateRequisition.call(%{institution_id: "None exisiting"})
   end
 
   test "deletes requisition on failure", %{bypass: bypass} do

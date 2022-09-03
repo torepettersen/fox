@@ -166,7 +166,9 @@ defmodule Fox.Mocks do
   def mock(%Bypass{} = bypass, :fetch_requisition_with_account_data, _attrs) do
     account_id = mock(bypass, :fetch_account_details)
     mock(bypass, :fetch_account_balances, id: account_id)
-    mock(bypass, :fetch_requisition, accounts: [account_id])
+    requisition_id = mock(bypass, :fetch_requisition, accounts: [account_id])
+
+    %{requisition_id: requisition_id, account_id: account_id}
   end
 
   def setup_bypass(module, client) do

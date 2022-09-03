@@ -148,8 +148,7 @@ defmodule Fox.UsersTest do
     test "validates email uniqueness", %{user: user} do
       %{email: email} = insert(:user)
 
-      {:error, changeset} =
-        Users.apply_user_email(user, valid_user_password(), %{email: email})
+      {:error, changeset} = Users.apply_user_email(user, valid_user_password(), %{email: email})
 
       assert "has already been taken" in errors_on(changeset).email
     end
@@ -327,7 +326,7 @@ defmodule Fox.UsersTest do
 
   describe "get_user_by_session_token/1" do
     setup do
-      user = insert(:user) 
+      user = insert(:user)
       token = Users.generate_user_session_token(user)
       %{user: user, token: token}
     end
@@ -349,7 +348,7 @@ defmodule Fox.UsersTest do
 
   describe "delete_session_token/1" do
     test "deletes the token" do
-      user = insert(:user) 
+      user = insert(:user)
       token = Users.generate_user_session_token(user)
       assert Users.delete_session_token(token) == :ok
       refute Users.get_user_by_session_token(token)
@@ -377,7 +376,7 @@ defmodule Fox.UsersTest do
 
   describe "confirm_user/1" do
     setup do
-      user = insert(:user) 
+      user = insert(:user)
 
       token =
         extract_user_token(fn url ->
@@ -430,7 +429,7 @@ defmodule Fox.UsersTest do
 
   describe "get_user_by_reset_password_token/1" do
     setup do
-      user = insert(:user) 
+      user = insert(:user)
 
       token =
         extract_user_token(fn url ->

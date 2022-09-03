@@ -23,5 +23,6 @@ defmodule Fox.Repo.Migrations.CreateAccounts do
     create index(:accounts, [:user_id])
     create index(:accounts, [:requisition_id])
     create index(:accounts, [:account_group_id])
+    create unique_index(:accounts, [:nordigen_id])
   end
 end

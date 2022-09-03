@@ -22,21 +22,11 @@ defmodule Fox.Institutions do
     |> Repo.all()
   end
 
-  @doc """
-  Gets a single requisition.
-
-  Raises `Ecto.NoResultsError` if the Requisition does not exist.
-
-  ## Examples
-
-      iex> get_requisition!(123)
-      %Requisition{}
-
-      iex> get_requisition!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_requisition!(id), do: Repo.get!(Requisition, id)
+  def fetch_requisition(id) do
+    Requisition
+    |> Repo.get(id)
+    |> Repo.wrap_result()
+  end
 
   def fetch_requisition_by(attrs) do
     Requisition
