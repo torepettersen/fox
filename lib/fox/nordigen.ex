@@ -38,6 +38,19 @@ defmodule Fox.Nordigen do
     end
   end
 
+  def fetch_account_transactions(id) when is_binary(id) do
+    case get("/accounts/#{id}/transactions/") do
+      {:ok, %{"transactions" => transactions}} -> {:ok, flatten_transactions(transactions)}
+      error -> error
+    end
+  end
+
+  defp flatten_transactions(transactions) do
+    Enum.flat_map(transactions, fn {status, transactions} ->
+      Enum.map(transactions, &Map.put(&1, "status", status))
+    end)
+  end
+
   def fetch_requisition_with_account_data(id) when is_binary(id) do
     with {:ok, requisition} <- fetch_requisition(id),
          {:ok, accounts} <- fetch_account_data(requisition["accounts"]) do
@@ -50,11 +63,13 @@ defmodule Fox.Nordigen do
   def fetch_account_data(ids) do
     Enum.reduce_while(ids, {:ok, []}, fn account_id, {:ok, accounts} ->
       with {:ok, details} <- fetch_account_details(account_id),
-           {:ok, balances} <- fetch_account_balances(account_id) do
+           {:ok, balances} <- fetch_account_balances(account_id),
+           {:ok, transactions} <- fetch_account_transactions(account_id) do
         account =
           details
           |> Map.put("id", account_id)
           |> Map.put("balances", balances)
+          |> Map.put("transactions", transactions)
 
         {:cont, {:ok, [account | accounts]}}
       else

@@ -84,9 +84,20 @@ defmodule Fox.NordigenTest do
     end
   end
 
+  test "fetch_account_transactions/1", %{bypass: bypass} do
+    id = mock(bypass, :fetch_account_transactions)
+
+    {:ok,
+     [
+       %{"transactionId" => _, "status" => "booked"},
+       %{"transactionId" => _, "status" => "pending"}
+     ]} = Nordigen.fetch_account_transactions(id)
+  end
+
   test "fetch_requisition_with_account_data/1", %{bypass: bypass} do
     account_id = mock(bypass, :fetch_account_details)
     mock(bypass, :fetch_account_balances, id: account_id)
+    mock(bypass, :fetch_account_transactions, id: account_id)
     requisition_id = mock(bypass, :fetch_requisition, accounts: [account_id])
 
     assert {:ok, result} = Nordigen.fetch_requisition_with_account_data(requisition_id)
@@ -97,7 +108,8 @@ defmodule Fox.NordigenTest do
                %{
                  "id" => ^account_id,
                  "iban" => _,
-                 "balances" => [%{"balanceAmount" => _} | _]
+                 "balances" => [%{"balanceAmount" => _} | _],
+                 "transactions" => [%{"transactionId" => _} | _]
                }
              ]
            } = result
