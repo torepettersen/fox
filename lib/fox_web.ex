@@ -13,6 +13,11 @@ defmodule FoxWeb do
   and import those modules here.
   """
 
+  @live_views FoxWeb.Router
+              |> Phoenix.Router.routes()
+              |> Enum.filter(&(&1.helper == "live"))
+              |> Enum.map(& &1.metadata.log_module)
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: FoxWeb
@@ -65,16 +70,6 @@ defmodule FoxWeb do
     end
   end
 
-  def router do
-    quote do
-      use Phoenix.Router
-
-      import Plug.Conn
-      import Phoenix.Controller
-      import Phoenix.LiveView.Router
-    end
-  end
-
   def channel do
     quote do
       use Phoenix.Channel
@@ -97,6 +92,17 @@ defmodule FoxWeb do
       import FoxWeb.Gettext
       alias FoxWeb.Router.Helpers, as: Routes
       import FoxWeb.Components
+      import FoxWeb.ViewHelpers
+
+      unquote(live_aliases())
+    end
+  end
+
+  defp live_aliases do
+    for module <- @live_views do
+      quote do
+        alias unquote(module)
+      end
     end
   end
 
@@ -106,4 +112,6 @@ defmodule FoxWeb do
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
+
+  def live_views, do: @live_views
 end

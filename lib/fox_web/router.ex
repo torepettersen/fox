@@ -1,5 +1,9 @@
 defmodule FoxWeb.Router do
-  use FoxWeb, :router
+  use Phoenix.Router
+
+  import Plug.Conn
+  import Phoenix.Controller
+  import Phoenix.LiveView.Router
 
   import FoxWeb.UserAuth
 
@@ -28,6 +32,7 @@ defmodule FoxWeb.Router do
 
     live "/banks", BanksLive
     live "/accounts", AccountsLive
+    live "/accounts/:id", AccountLive
   end
 
   # Other scopes may use custom stacks.

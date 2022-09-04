@@ -12,4 +12,9 @@ defmodule Fox.Accounts do
     |> Account.query(args)
     |> Repo.all()
   end
+
+  def fetch_account(id) do
+    Repo.get(Account, id)
+    |> Repo.wrap_result()
+  end
 end
