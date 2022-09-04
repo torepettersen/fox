@@ -28,6 +28,24 @@ defmodule Fox.Repo do
   def wrap_result(nil = _result), do: {:error, :not_found}
   def wrap_result(result), do: {:ok, result}
 
+  @type ok_or_error :: {:ok, any()} | {:error, any()}
+  @type summarize_result :: %{ok: integer(), error: integer(), errors: [{:error, any()}]}
+
+  @spec summarize_results([ok_or_error()]) :: summarize_result()
+  def summarize_results(results) do
+    Enum.reduce(results, %{ok: 0, error: 0, errors: []}, fn result, acc ->
+      case result do
+        {:ok, _} ->
+          Map.update!(acc, :ok, &(&1 + 1))
+
+        {:error, _} = error ->
+          acc
+          |> Map.update!(:error, &(&1 + 1))
+          |> Map.update!(:errors, &[error | &1])
+      end
+    end)
+  end
+
   def put_user(user) do
     Process.put(@user_key, user)
   end

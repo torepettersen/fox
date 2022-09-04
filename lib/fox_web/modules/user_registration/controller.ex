@@ -13,9 +13,7 @@ defmodule FoxWeb.UserRegistrationController do
         |> UserAuth.log_in_user(user)
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        live_render(conn, UserRegistrationLive,
-          session: %{"changeset" => changeset}
-        )
+        live_render(conn, UserRegistrationLive, session: %{"changeset" => changeset})
     end
   end
 end

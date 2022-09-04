@@ -2,6 +2,7 @@ defmodule Fox.Accounts.Account do
   use Fox.Schema
 
   import Ecto.Changeset
+  import Ecto.Query
   alias Fox.Accounts.AccountGroup
   alias Fox.Institutions.Requisition
   alias Fox.Users.User
@@ -48,4 +49,18 @@ defmodule Fox.Accounts.Account do
     |> cast(attrs, @fields)
     |> validate_required(@required_fields)
   end
+
+  def query(queryable, args) do
+    Enum.reduce(args, queryable, &filter/2)
+  end
+
+  defp filter({:visible, value}, query), do: where(query, [account], account.visible == ^value)
+
+  defp filter({:account_group, nil}, query),
+    do: where(query, [account], is_nil(account.account_group_id))
+
+  defp filter({:account_group, value}, query),
+    do: where(query, [account], account.account_group_id == ^value)
+
+  defp filter(_, query), do: query
 end

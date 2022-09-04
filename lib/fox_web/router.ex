@@ -27,6 +27,7 @@ defmodule FoxWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live "/banks", BanksLive
+    live "/accounts", AccountsLive
   end
 
   # Other scopes may use custom stacks.

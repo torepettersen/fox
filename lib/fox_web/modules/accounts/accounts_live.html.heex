@@ -1,0 +1,30 @@
+<div>
+  <header class="container py-12 flex justify-between gradient-primary drop-shadow-xl">
+    <div>
+      <h3 class="text-l text-white opacity-80">Total balance</h3>
+      <h2 class="text-2xl text-white opacity-90"><%= format_amount(@total_amount, show_currency: false) %></h2>
+    </div>
+  </header>
+  <main class="container py-6">
+    <%= for {name, accounts} <- @account_groups do %>
+      <div>
+        <h3 class="text-lg"><%= name %></h3>
+        <ul class="flex flex-col divide-y divide-gray-600/10">
+          <%= for account <- accounts do %>
+            <li class="py-4">
+              <div class="flex justify-between space-x-4">
+                <div class="flex flex-col">
+                  <span class="text-sm line-clamp-1"><%= account.name %></span>
+                  <span class="text-xs"><%= format_account_number(account) %></span>
+                </div>
+                <div class="flex">
+                  <span class="text-sm"><%= format_amount(account) %></span>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul> 
+      </div>
+    <% end %>
+  </main>
+</div>
