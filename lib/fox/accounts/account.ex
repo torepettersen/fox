@@ -4,6 +4,7 @@ defmodule Fox.Accounts.Account do
   import Ecto.Changeset
   import Ecto.Query
   alias Fox.Accounts.AccountGroup
+  alias Fox.Accounts.Transaction
   alias Fox.Institutions.Requisition
   alias Fox.Users.User
 
@@ -21,6 +22,8 @@ defmodule Fox.Accounts.Account do
     belongs_to :requisition, Requisition
     belongs_to :account_group, AccountGroup
     belongs_to :user, User
+
+    has_many :transactions, Transaction
 
     timestamps()
   end
@@ -47,8 +50,20 @@ defmodule Fox.Accounts.Account do
   def changeset(account, attrs) do
     account
     |> cast(attrs, @fields)
+    |> cast_transactions()
     |> validate_required(@required_fields)
   end
+
+  defp cast_transactions(%{params: %{"transactions" => transactions}} = changeset) do
+    {_, user_id} = fetch_field(changeset, :user_id)
+    new_transactions = Enum.map(transactions, &Map.put_new(&1, :user_id, user_id))
+
+    changeset
+    |> put_in([Access.key(:params), "transactions"], new_transactions)
+    |> cast_assoc(:transactions)
+  end
+
+  defp cast_transactions(changeset), do: changeset
 
   def query(queryable, args) do
     Enum.reduce(args, queryable, &filter/2)

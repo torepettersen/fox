@@ -11,13 +11,17 @@ defmodule Fox.Institutions.Service.RefreshRequisitionTest do
     user = insert(:user)
     Repo.put_user(user)
 
-    %{requisition_id: nordigen_requisition_id, account_id: nordigen_account_id} =
-      mock(bypass, :fetch_requisition_with_account_data)
+    %{
+      requisition_id: nordigen_requisition_id,
+      account_id: nordigen_account_id,
+      transaction_id: transaction_id
+    } = mock(bypass, :fetch_requisition_with_account_data)
 
     %{
       user: user,
       nordigen_requisition_id: nordigen_requisition_id,
-      nordigen_account_id: nordigen_account_id
+      nordigen_account_id: nordigen_account_id,
+      transaction_id: transaction_id
     }
   end
 
@@ -41,23 +45,28 @@ defmodule Fox.Institutions.Service.RefreshRequisitionTest do
     assert {:ok, %Requisition{} = requisition} = RefreshRequisition.call(requisition)
     assert_maps_equal(requisition, requisition_attrs, Map.keys(requisition_attrs))
 
-    requisition = Repo.preload(requisition, :accounts)
+    requisition = Repo.preload(requisition, accounts: :transactions)
     assert_maps_equal(List.first(requisition.accounts), accounts_attrs, Map.keys(accounts_attrs))
   end
 
   test "update existing accounts", ctx do
     %{
-      user: user,
       nordigen_requisition_id: nordigen_requisition_id,
-      nordigen_account_id: nordigen_account_id
+      nordigen_account_id: nordigen_account_id,
+      transaction_id: transaction_id
     } = ctx
 
-    account = %{id: id, name: name} = insert(:account, nordigen_id: nordigen_account_id)
+    requisition = insert(:requisition, nordigen_id: nordigen_requisition_id)
 
-    requisition =
-      insert(:requisition, user: user, nordigen_id: nordigen_requisition_id, accounts: [account])
+    account =
+      %{id: account_id, name: account_name} =
+      insert(:account, nordigen_id: nordigen_account_id, requisition: requisition)
+
+    %{transaction_id: transaction_id} =
+      insert(:transaction, transaction_id: transaction_id, account: account)
 
     assert {:ok, %Requisition{accounts: accounts}} = RefreshRequisition.call(requisition)
-    assert [%{id: ^id, name: ^name}] = accounts
+    assert [%{id: ^account_id, name: ^account_name, transactions: transactions}] = accounts
+    assert [%{transaction_id: ^transaction_id}] = transactions
   end
 end

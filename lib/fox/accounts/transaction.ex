@@ -1,13 +1,14 @@
 defmodule Fox.Accounts.Transaction do
   use Fox.Schema
 
+  import Ecto.Changeset
   alias Fox.Accounts.Account
   alias Fox.Users.User
 
-  @transaction_statues [:booked, :pending]
+  @transaction_statuses [:booked, :pending]
 
   schema "transactions" do
-    field :status, Ecto.Enum, values: @transaction_statues
+    field :status, Ecto.Enum, values: @transaction_statuses
     field :transaction_id, :string
     field :booking_date, :date
     field :transaction_date, :date
@@ -20,5 +21,21 @@ defmodule Fox.Accounts.Transaction do
     belongs_to :user, User
 
     timestamps()
+  end
+
+  @required_fileds [
+    :status,
+    :transaction_id,
+    :booking_date,
+    :transaction_date,
+    :amount,
+    :user_id
+  ]
+  @fields [:type, :party, :additional_information, :account_id | @required_fileds]
+
+  def changeset(transaction, attrs) do
+    transaction
+    |> cast(attrs, @fields)
+    |> validate_required(@required_fileds)
   end
 end

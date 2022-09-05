@@ -157,13 +157,14 @@ defmodule Fox.Mocks do
 
   def mock(%Bypass{} = bypass, :fetch_account_transactions, attrs) do
     id = Keyword.get_lazy(attrs, :id, fn -> Ecto.UUID.generate() end)
+    transaction_id = Keyword.get(attrs, :transaction_id, "0116_0021893786078_0000001")
 
     Bypass.expect(bypass, "GET", "/accounts/#{id}/transactions/", fn conn ->
       json(conn, %{
         "transactions" => %{
           "booked" => [
             %{
-              "transactionId" => "0116_0021893786078_0000001",
+              "transactionId" => transaction_id,
               "bookingDate" => "2022-09-01",
               "valueDate" => "2022-09-01",
               "transactionAmount" => %{
@@ -179,24 +180,7 @@ defmodule Fox.Mocks do
               "additionalInformation" => "Kontoregulering, Renovering"
             }
           ],
-          "pending" => [
-            %{
-              "transactionId" => "0116_0021893786078_0000001",
-              "bookingDate" => "2022-09-01",
-              "valueDate" => "2022-09-01",
-              "transactionAmount" => %{
-                "amount" => "-1400.0",
-                "currency" => "NOK"
-              },
-              "creditorAccount" => %{
-                "bban" => "12256351771"
-              },
-              "debtorAccount" => %{
-                "bban" => "12256448643"
-              },
-              "additionalInformation" => "Kontoregulering, Renovering"
-            }
-          ]
+          "pending" => []
         }
       })
     end)
@@ -213,12 +197,13 @@ defmodule Fox.Mocks do
   end
 
   def mock(%Bypass{} = bypass, :fetch_requisition_with_account_data, _attrs) do
+    transaction_id = "0116_0021893786076_0000001"
     account_id = mock(bypass, :fetch_account_details)
     mock(bypass, :fetch_account_balances, id: account_id)
-    mock(bypass, :fetch_account_transactions, id: account_id)
+    mock(bypass, :fetch_account_transactions, id: account_id, transaction_id: transaction_id)
     requisition_id = mock(bypass, :fetch_requisition, accounts: [account_id])
 
-    %{requisition_id: requisition_id, account_id: account_id}
+    %{requisition_id: requisition_id, account_id: account_id, transaction_id: transaction_id}
   end
 
   def setup_bypass(module, client) do

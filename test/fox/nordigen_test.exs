@@ -89,8 +89,7 @@ defmodule Fox.NordigenTest do
 
     {:ok,
      [
-       %{"transactionId" => _, "status" => "booked"},
-       %{"transactionId" => _, "status" => "pending"}
+       %{"transactionId" => _, "status" => "booked"}
      ]} = Nordigen.fetch_account_transactions(id)
   end
 
