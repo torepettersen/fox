@@ -73,7 +73,7 @@ defmodule Fox.Institutions.Service.RefreshRequisition do
   end
 
   defp build_transaction(nil, exsisting_transaction) when not is_nil(exsisting_transaction) do
-    exsisting_transaction
+    Map.from_struct(exsisting_transaction)
   end
 
   defp build_transaction(transaction, exsisting_transaction) do

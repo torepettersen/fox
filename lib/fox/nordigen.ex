@@ -60,19 +60,32 @@ defmodule Fox.Nordigen do
   end
 
   def fetch_account_data(ids) do
-    Enum.reduce_while(ids, {:ok, []}, fn account_id, {:ok, accounts} ->
-      with {:ok, details} <- fetch_account_details(account_id),
-           {:ok, balances} <- fetch_account_balances(account_id),
-           {:ok, transactions} <- fetch_account_transactions(account_id) do
+    ids
+    |> Parallel.map(fn account_id ->
+      tasks = [
+        Task.async(fn -> fetch_account_details(account_id) end),
+        Task.async(fn -> fetch_account_balances(account_id) end),
+        Task.async(fn -> fetch_account_transactions(account_id) end)
+      ]
+
+      [details, balances, transactions] = Task.await_many(tasks, 15_000)
+
+      with {:ok, details} <- details,
+           {:ok, balances} <- balances,
+           {:ok, transactions} <- transactions do
         account =
           details
           |> Map.put("id", account_id)
           |> Map.put("balances", balances)
           |> Map.put("transactions", transactions)
 
-        {:cont, {:ok, [account | accounts]}}
-      else
-        error -> {:halt, error}
+        {:ok, account}
+      end
+    end)
+    |> Enum.reduce_while({:ok, []}, fn result, {:ok, accounts} ->
+      case result do
+        {:ok, account} -> {:cont, {:ok, [account | accounts]}}
+        {:error, _} = error -> {:halt, error}
       end
     end)
   end

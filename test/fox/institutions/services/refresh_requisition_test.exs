@@ -1,5 +1,5 @@
 defmodule Fox.Institutions.Service.RefreshRequisitionTest do
-  use Fox.DataCase, async: true
+  use Fox.DataCase, async: false
 
   alias Fox.Institutions.Service.RefreshRequisition
   alias Fox.Institutions.Requisition
@@ -7,7 +7,7 @@ defmodule Fox.Institutions.Service.RefreshRequisitionTest do
 
   setup do
     bypass = Bypass.open()
-    set_bypass(bypass)
+    set_bypass_global(bypass)
 
     user = insert(:user)
     Repo.put_user(user)
