@@ -1,5 +1,4 @@
 defmodule Fox.Nordigen do
-  use Mockable.Decorator
   alias Fox.Nordigen.ClientServer
 
   require Logger
@@ -124,8 +123,13 @@ defmodule Fox.Nordigen do
     {:error, :unknown_error}
   end
 
-  @decorate mockable()
-  def client do
-    ClientServer.client()
+  if Mix.env() == :test do
+    def client do
+      Req.new() |> Req.BypassStep.run_bypass()
+    end
+  else
+    def client do
+      ClientServer.client()
+    end
   end
 end

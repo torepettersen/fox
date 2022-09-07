@@ -2,10 +2,10 @@ defmodule Fox.NordigenTest do
   use Fox.DataCase, async: true
 
   alias Fox.Nordigen
-  alias Mockable
 
   setup do
-    bypass = setup_bypass(Nordigen, :client)
+    bypass = Bypass.open()
+    set_bypass(bypass)
     %{bypass: bypass}
   end
 
@@ -91,26 +91,5 @@ defmodule Fox.NordigenTest do
      [
        %{"transactionId" => _, "status" => "booked"}
      ]} = Nordigen.fetch_account_transactions(id)
-  end
-
-  test "fetch_requisition_with_account_data/1", %{bypass: bypass} do
-    account_id = mock(bypass, :fetch_account_details)
-    mock(bypass, :fetch_account_balances, id: account_id)
-    mock(bypass, :fetch_account_transactions, id: account_id)
-    requisition_id = mock(bypass, :fetch_requisition, accounts: [account_id])
-
-    assert {:ok, result} = Nordigen.fetch_requisition_with_account_data(requisition_id)
-
-    assert %{
-             "id" => ^requisition_id,
-             "accounts" => [
-               %{
-                 "id" => ^account_id,
-                 "iban" => _,
-                 "balances" => [%{"balanceAmount" => _} | _],
-                 "transactions" => [%{"transactionId" => _} | _]
-               }
-             ]
-           } = result
   end
 end

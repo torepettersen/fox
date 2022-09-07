@@ -2,13 +2,13 @@ defmodule Fox.Institutions.Service.CreateRequisitionTest do
   use Fox.DataCase, async: true
 
   alias Ecto.Changeset
-  alias Fox.Nordigen
   alias Fox.Institutions.Requisition
   alias Fox.Institutions.Service.CreateRequisition
   alias Fox.Repo
 
   setup do
-    bypass = setup_bypass(Nordigen, :client)
+    bypass = Bypass.open()
+    set_bypass(bypass)
     mock(bypass, :create_requisition, institution_id: "DNB")
 
     user = insert(:user)

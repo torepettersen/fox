@@ -2,10 +2,10 @@ defmodule Fox.Institutions.Service.RefreshRequisitionsTest do
   use Fox.DataCase, async: true
 
   alias Fox.Institutions.Service.RefreshRequisitions
-  alias Fox.Nordigen
 
   setup do
-    bypass = setup_bypass(Nordigen, :client)
+    bypass = Bypass.open()
+    set_bypass(bypass)
     %{bypass: bypass}
   end
 

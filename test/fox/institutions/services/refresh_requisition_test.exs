@@ -6,7 +6,8 @@ defmodule Fox.Institutions.Service.RefreshRequisitionTest do
   alias Fox.Nordigen
 
   setup do
-    bypass = setup_bypass(Nordigen, :client)
+    bypass = Bypass.open()
+    set_bypass(bypass)
 
     user = insert(:user)
     Repo.put_user(user)

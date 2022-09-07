@@ -42,7 +42,6 @@ defmodule Fox.MixProject do
       {:gettext, "~> 0.18"},
       {:heroicons, "~> 0.3"},
       {:jason, "~> 1.2"},
-      {:mockable, github: "torepettersen/mockable"},
       {:phoenix, "~> 1.6.10"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.0"},

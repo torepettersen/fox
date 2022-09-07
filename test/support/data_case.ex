@@ -27,6 +27,8 @@ defmodule Fox.DataCase do
       import Fox.DataCase
       import Fox.Factory
       import Fox.Mocks
+      import Fox.Mocks
+      import Req.BypassStep
       import Assertions, except: [assert_lists_equal: 2, assert_lists_equal: 3]
       import Fox.AssertionAdjustments
     end

@@ -206,12 +206,6 @@ defmodule Fox.Mocks do
     %{requisition_id: requisition_id, account_id: account_id, transaction_id: transaction_id}
   end
 
-  def setup_bypass(module, client) do
-    bypass = Bypass.open()
-    Mockable.expect(module, client, Req.new(base_url: endpoint_url(bypass.port)))
-    bypass
-  end
-
   defp json(conn, resp, attrs \\ []) do
     status = attrs[:status] || 200
 
@@ -225,6 +219,4 @@ defmodule Fox.Mocks do
       {:ok, body, _conn} -> Jason.decode!(body)
     end
   end
-
-  defp endpoint_url(port), do: "http://localhost:#{port}/"
 end
