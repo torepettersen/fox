@@ -61,27 +61,30 @@ defmodule Fox.Nordigen do
 
   def fetch_account_data(ids) do
     ids
-    |> Parallel.map(fn account_id ->
-      tasks = [
-        Task.async(fn -> fetch_account_details(account_id) end),
-        Task.async(fn -> fetch_account_balances(account_id) end),
-        Task.async(fn -> fetch_account_transactions(account_id) end)
-      ]
+    |> Parallel.map(
+      fn account_id ->
+        tasks = [
+          Task.async(fn -> fetch_account_details(account_id) end),
+          Task.async(fn -> fetch_account_balances(account_id) end),
+          Task.async(fn -> fetch_account_transactions(account_id) end)
+        ]
 
-      [details, balances, transactions] = Task.await_many(tasks, 15_000)
+        [details, balances, transactions] = Task.await_many(tasks, 15_000)
 
-      with {:ok, details} <- details,
-           {:ok, balances} <- balances,
-           {:ok, transactions} <- transactions do
-        account =
-          details
-          |> Map.put("id", account_id)
-          |> Map.put("balances", balances)
-          |> Map.put("transactions", transactions)
+        with {:ok, details} <- details,
+             {:ok, balances} <- balances,
+             {:ok, transactions} <- transactions do
+          account =
+            details
+            |> Map.put("id", account_id)
+            |> Map.put("balances", balances)
+            |> Map.put("transactions", transactions)
 
-        {:ok, account}
-      end
-    end)
+          {:ok, account}
+        end
+      end,
+      15_000
+    )
     |> Enum.reduce_while({:ok, []}, fn result, {:ok, accounts} ->
       case result do
         {:ok, account} -> {:cont, {:ok, [account | accounts]}}

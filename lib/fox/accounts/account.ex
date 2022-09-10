@@ -23,7 +23,7 @@ defmodule Fox.Accounts.Account do
     belongs_to :account_group, AccountGroup
     belongs_to :user, User
 
-    has_many :transactions, Transaction
+    has_many :transactions, Transaction, preload_order: [desc: :transaction_date]
 
     timestamps()
   end

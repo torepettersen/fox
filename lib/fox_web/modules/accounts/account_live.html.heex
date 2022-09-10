@@ -5,4 +5,7 @@
       <h2 class="text-2xl text-white opacity-90"><%= format_amount(@account, show_currency: false) %></h2>
     </div>
   </header>
+  <div class="py-2">
+    <canvas id="account-balance" phx-hook="chart"></canvas>
+  </div>
 </div>

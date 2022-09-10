@@ -5,7 +5,12 @@ defmodule Fox.Accounts do
 
   import Ecto.Query
   alias Fox.Accounts.Account
+  alias Fox.Accounts.Service
   alias Fox.Repo
+
+  defdelegate balance_development(current_amount, transactions, range),
+    to: Service.BalanceDevelopment,
+    as: :call
 
   def list_accounts(args \\ %{}) do
     from(account in Account)
