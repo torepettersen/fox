@@ -2,6 +2,7 @@ defmodule FoxWeb.AccountLive do
   use FoxWeb, :live_view
 
   alias Fox.Accounts
+  alias Fox.DateHelper
   alias Fox.Repo
 
   def mount(%{"id" => id}, _session, socket) do
@@ -33,9 +34,9 @@ defmodule FoxWeb.AccountLive do
 
   defp date_range do
     today = Date.utc_today()
-    beginning_of_month = Date.beginning_of_month(today)
+    end_of_last_month = DateHelper.end_of_last_month(today)
     end_of_month = Date.end_of_month(today)
-    Date.range(beginning_of_month, end_of_month)
+    Date.range(end_of_last_month, end_of_month)
   end
 
   defp round10000(n) when rem(n, 10_000) < 6_000, do: n - rem(n, 10_000)

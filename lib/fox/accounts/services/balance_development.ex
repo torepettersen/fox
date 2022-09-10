@@ -1,4 +1,6 @@
 defmodule Fox.Accounts.Service.BalanceDevelopment do
+  alias Fox.DateHelper
+
   def call(current_amount, transactions, range) do
     current_amount
     |> build_balance_range(transactions, range)
@@ -18,10 +20,13 @@ defmodule Fox.Accounts.Service.BalanceDevelopment do
 
   defp sum_until(current_amount, transactions, date) do
     {transactions, remaining_transactions} =
-      Enum.split_while(transactions, &(&1.transaction_date > date))
+      Enum.split_while(transactions, &DateHelper.after?(&1.transaction_date, date))
 
-    {:ok, sum} =
-      transactions |> Enum.map(& &1.amount) |> then(&[current_amount | &1]) |> Money.sum()
+    sum =
+      transactions
+      |> Enum.map(& &1.amount)
+      |> Money.sum()
+      |> then(fn {:ok, sum} -> Money.sub!(current_amount, sum) end)
 
     {sum, remaining_transactions}
   end
