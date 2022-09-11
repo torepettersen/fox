@@ -17,19 +17,30 @@ defmodule FoxWeb.AccountLive do
 
   defp build_chart(account) do
     date_range = date_range()
-
-    data =
-      account.interim_available_amount
-      |> Accounts.balance_development(account.transactions, date_range)
-      |> Enum.map(&(&1.amount |> Decimal.round() |> Decimal.to_integer()))
-
-    max = round10000(Enum.max(data) + 10_000)
+    data = graph_data(account, date_range)
 
     %{
       labels: date_range |> Enum.to_list(),
       data: data,
-      max: max
+      max: graph_max(data)
     }
+  end
+
+  defp graph_data(account, date_range) do
+    account.interim_available_amount
+    |> Accounts.balance_development(account.transactions, date_range)
+    |> Enum.map(fn
+      %{amount: amount} -> amount |> Decimal.round() |> Decimal.to_integer()
+      nil -> nil
+    end)
+  end
+
+  defp graph_max(data) do
+    data
+    |> Enum.reject(&is_nil/1)
+    |> Enum.max()
+    |> Kernel.+(10_000)
+    |> round10000()
   end
 
   defp date_range do

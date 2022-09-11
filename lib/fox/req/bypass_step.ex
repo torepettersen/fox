@@ -1,13 +1,7 @@
 defmodule Req.BypassStep do
-  if Mix.env() == :test do
-    def set_bypass(bypass) do
-      pdict_set(bypass)
-    end
-
-    def set_bypass_global(bypass) do
-      agent_set(bypass)
-    end
-
+  unless Mix.env() == :test do
+    def run_bypass(request), do: request
+  else
     def run_bypass(request) do
       if bypass = pdict_get() || agent_get() do
         base_url = "http://localhost:#{bypass.port}"
@@ -15,6 +9,14 @@ defmodule Req.BypassStep do
       else
         raise "Bypass not setup"
       end
+    end
+
+    def set_bypass(bypass) do
+      pdict_set(bypass)
+    end
+
+    def set_bypass_global(bypass) do
+      agent_set(bypass)
     end
 
     defp pdict_set(bypass), do: Process.put(__MODULE__, bypass)
@@ -42,7 +44,5 @@ defmodule Req.BypassStep do
         pid -> Agent.get(pid, fn f -> f end)
       end
     end
-  else
-    def run_bypass(request), do: request
   end
 end

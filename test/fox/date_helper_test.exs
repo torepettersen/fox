@@ -1,7 +1,7 @@
 defmodule Fox.DateHelperTest do
-  use Fox.DataCase, async: true
+  use ExUnit.Case, async: true
 
-  alias Fox.DateHelper
+  import Fox.DateHelper
 
   doctest Fox.DateHelper
 end
