@@ -39,8 +39,7 @@ defmodule FoxWeb.AccountLive do
     data
     |> Enum.reject(&is_nil/1)
     |> Enum.max()
-    |> Kernel.+(10_000)
-    |> round10000()
+    |> Kernel.*(1.1)
   end
 
   defp date_range do
@@ -49,7 +48,4 @@ defmodule FoxWeb.AccountLive do
     end_of_month = Date.end_of_month(today)
     Date.range(end_of_last_month, end_of_month)
   end
-
-  defp round10000(n) when rem(n, 10_000) < 6_000, do: n - rem(n, 10_000)
-  defp round10000(n), do: n + (10_000 - rem(n, 10_000))
 end

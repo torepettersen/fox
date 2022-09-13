@@ -41,7 +41,10 @@ export default {
             suggestedMin: 0,
             position: 'right',
             ticks: {
-              stepSize: 10000,
+              maxTicksLimit: 5,
+              callback: function(value) {
+                return new Intl.NumberFormat('en', { notation: 'compact' }).format(value)
+              }
             },
           },
         },
