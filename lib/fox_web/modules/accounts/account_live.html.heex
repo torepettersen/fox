@@ -8,4 +8,7 @@
   <div class="py-2">
     <canvas id="account-balance" phx-hook="chart"></canvas>
   </div>
+  <div class="container">
+    <.transactions transactions={@account.transactions}/>
+  </div>
 </div>

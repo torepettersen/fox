@@ -8,4 +8,5 @@ defmodule FoxWeb.Components do
   defdelegate link(assigns), to: FoxWeb.LinkComponent
   defdelegate navbar(assigns), to: FoxWeb.NavbarComponent
   defdelegate notifications(assigns), to: FoxWeb.NotificationComponent
+  defdelegate transactions(assigns), to: FoxWeb.TransactionsComponent
 end
