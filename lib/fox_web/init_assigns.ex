@@ -1,5 +1,5 @@
 defmodule FoxWeb.InitAssigns do
-  import Phoenix.LiveView
+  use Phoenix.Component
 
   alias Fox.Users
   alias Fox.Repo

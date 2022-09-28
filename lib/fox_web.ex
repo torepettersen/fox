@@ -35,6 +35,8 @@ defmodule FoxWeb do
         root: "lib/fox_web/modules",
         namespace: FoxWeb
 
+      use Phoenix.Component
+
       # Import convenience functions from controllers
       import Phoenix.Controller,
         only: [get_csrf_token: 0, get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
