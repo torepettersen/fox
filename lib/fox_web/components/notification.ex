@@ -1,8 +1,7 @@
 defmodule FoxWeb.NotificationComponent do
   use FoxWeb, :component
 
-  alias Heroicons.Outline
-  alias Heroicons.Solid
+  attr :flash, :list
 
   def notifications(assigns) do
     ~H"""
@@ -38,19 +37,19 @@ defmodule FoxWeb.NotificationComponent do
 
   defp icon(%{type: "info"} = assigns) do
     ~H"""
-    <Outline.information_circle class="h-6 w-6 text-blue-600" />
+    <Heroicons.information_circle class="h-6 w-6 text-blue-600" />
     """
   end
 
   defp icon(%{type: "success"} = assigns) do
     ~H"""
-    <Outline.check_circle class="h-6 w-6 text-green-600" />
+    <Heroicons.check_circle class="h-6 w-6 text-green-600" />
     """
   end
 
   defp icon(%{type: "error"} = assigns) do
     ~H"""
-    <Outline.exclamation_circle class="h-6 w-6 text-red-600" />
+    <Heroicons.exclamation_circle class="h-6 w-6 text-red-600" />
     """
   end
 
@@ -63,7 +62,7 @@ defmodule FoxWeb.NotificationComponent do
       class="rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
     >
       <span class="sr-only">Close</span>
-      <Solid.x class="h-5 w-5" />
+      <Heroicons.x_mark solid class="h-5 w-5" />
     </button>
     """
   end

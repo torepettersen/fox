@@ -4,14 +4,13 @@ defmodule FoxWeb.ButtonComponent do
   @base_style "group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2"
   @variant_style "bg-blue-600 text-white hover:text-slate-100 hover:bg-blue-500 active:bg-blue-800 active:text-blue-100 focus-visible:outline-blue-600"
 
-  def button(assigns) when is_map_key(assigns, :href) or is_map_key(assigns, :navigate) do
-    rest =
-      assigns
-      |> Map.drop([:__changed__, :inner_block])
-      |> Enum.to_list()
+  slot :inner_block
+  attr :class, :string
+  attr :rest, :global
 
+  def button(assigns) when is_map_key(assigns, :href) or is_map_key(assigns, :navigate) do
     ~H"""
-    <.link class={class(assigns)} {rest}>
+    <.link class={class(assigns)} {@rest}>
       <%= render_slot(@inner_block) %>
     </.link>
     """

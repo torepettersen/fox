@@ -1,9 +1,12 @@
 defmodule FoxWeb.FormInputComponent do
   use FoxWeb, :component
 
-  def form_input(%{type: :checkbox} = assigns) do
-    assigns = Map.drop(assigns, [:__changed__])
+  attr :form, :any, required: true
+  attr :field, :any, required: true
+  attr :type, :atom, default: :text
+  attr :label, :string
 
+  def form_input(%{type: :checkbox} = assigns) do
     ~H"""
     <div class="flex items-center">
       <.input {assigns} />
@@ -13,8 +16,6 @@ defmodule FoxWeb.FormInputComponent do
   end
 
   def form_input(assigns) do
-    assigns = Map.drop(assigns, [:__changed__])
-
     ~H"""
     <div class="space-y-1">
       <.form_label {assigns} />
@@ -24,9 +25,9 @@ defmodule FoxWeb.FormInputComponent do
     """
   end
 
-  defp form_label(%{label: label} = assigns) do
+  defp form_label(%{label: _label} = assigns) do
     ~H"""
-    <%= label @form, @field, label, class: "block text-sm font-medium text-gray-700" %>
+    <%= label @form, @field, @label, class: "block text-sm font-medium text-gray-700" %>
     """
   end
 
@@ -59,8 +60,6 @@ defmodule FoxWeb.FormInputComponent do
     <%= checkbox @form, @field, input_assigns(assigns) %>
     """
   end
-
-  defp input(assigns), do: input(Map.put(assigns, :type, :text))
 
   defp input_style(%{type: :checkbox}) do
     "h-4 w-4 mr-2 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"

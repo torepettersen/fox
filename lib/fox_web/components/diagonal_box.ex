@@ -1,6 +1,8 @@
 defmodule FoxWeb.DiagonalBox do
   use FoxWeb, :component
 
+  slot :inner_block
+
   def diagonal_box(assigns) do
     ~H"""
     <div class="bg-gradient-to-tr from-blue-800 to-blue-500" style={diagonal_box_style()}>

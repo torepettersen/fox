@@ -1,14 +1,14 @@
 defmodule FoxWeb.AlertComponent do
   use FoxWeb, :component
 
-  alias Heroicons.Outline
+  slot :inner_block
 
   def alert(assigns) do
     ~H"""
     <div class="bg-red-50 border-l-4 border-red-400 p-4">
       <div class="flex">
         <div class="flex-shrink-0">
-          <Outline.x_circle class="h-5 w-5 text-red-400" />
+          <Heroicons.x_circle class="h-5 w-5 text-red-400" />
         </div>
         <div class="ml-3">
           <p class="text-sm text-red-700">

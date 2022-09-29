@@ -1,6 +1,8 @@
 defmodule FoxWeb.TransactionsComponent do
   use FoxWeb, :component
 
+  attr :transactions, :list
+
   def transactions(assigns) do
     ~H"""
     <div class="space-y-6">

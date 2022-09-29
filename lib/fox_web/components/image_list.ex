@@ -1,6 +1,10 @@
 defmodule FoxWeb.ImageList do
   use FoxWeb, :component
 
+  attr :items, :list, default: []
+  attr :key, :any, default: :id
+  attr :image_url, :any, required: true
+  attr :title, :any
   def image_list(assigns) do
     ~H"""
     <ul

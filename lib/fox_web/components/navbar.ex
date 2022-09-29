@@ -5,6 +5,9 @@ defmodule FoxWeb.NavbarComponent do
   alias FoxWeb.UserSessionLive
   alias FoxWeb.UserRegistrationLive
 
+
+  attr :current_user, :any, required: true
+
   def navbar(assigns) do
     ~H"""
     <header class="py-10">
@@ -41,11 +44,12 @@ defmodule FoxWeb.NavbarComponent do
     """
   end
 
-  defp nav_link(assigns) do
-    rest = Map.delete(assigns, :class)
+  slot :inner_block
+  attr :rest, :global, include: ~w(href navigate method)
 
+  defp nav_link(assigns) do
     ~H"""
-    <.link class="inline-block rounded-lg py-1 px-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900" {rest}>
+    <.link class="inline-block rounded-lg py-1 px-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900" {@rest}>
       <%= render_slot(@inner_block) %>
     </.link>
     """
