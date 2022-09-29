@@ -5,6 +5,7 @@ defmodule FoxWeb.ImageList do
   attr :key, :any, default: :id
   attr :image_url, :any, required: true
   attr :title, :any
+
   def image_list(assigns) do
     ~H"""
     <ul
@@ -21,7 +22,7 @@ defmodule FoxWeb.ImageList do
             phx-click={assigns[:on_click]}
             phx-value-key={item[@key]}
           >
-            <img 
+            <img
               class="object-cover pointer-events-none group-hover:opacity-75"
               src={item[@image_url]}
             />

@@ -4,7 +4,7 @@ defmodule FoxWeb.NavbarComponent do
   alias FoxWeb.Endpoint
   alias FoxWeb.UserSessionLive
   alias FoxWeb.UserRegistrationLive
-
+  alias FoxWeb.AccountsLive
 
   attr :current_user, :any, required: true
 
@@ -22,7 +22,9 @@ defmodule FoxWeb.NavbarComponent do
               <.nav_link href="https://tailwindcss.com/">Tailwind CSS</.nav_link>
               <.nav_link href="https://tailwindui.com/">Tailwind UI</.nav_link>
               <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-                <.nav_link href={Routes.live_dashboard_path(Endpoint, :home)}>Live dashboard</.nav_link>
+                <.nav_link href={Routes.live_dashboard_path(Endpoint, :home)}>
+                  Live dashboard
+                </.nav_link>
               <% end %>
             </div>
           </div>
@@ -44,12 +46,25 @@ defmodule FoxWeb.NavbarComponent do
     """
   end
 
+  def navbar_app(assigns) do
+    ~H"""
+    <nav class="container py-4 flex justify-center fixed inset-x-0 bottom-0 z-10 bg-white shadow-top-lg">
+      <.link navigate={Routes.live_path(Endpoint, AccountsLive)}>
+        <Heroicons.banknotes class="h-6 w-6" />
+      </.link>
+    </nav>
+    """
+  end
+
   slot :inner_block
   attr :rest, :global, include: ~w(href navigate method)
 
   defp nav_link(assigns) do
     ~H"""
-    <.link class="inline-block rounded-lg py-1 px-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900" {@rest}>
+    <.link
+      class="inline-block rounded-lg py-1 px-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+      {@rest}
+    >
       <%= render_slot(@inner_block) %>
     </.link>
     """

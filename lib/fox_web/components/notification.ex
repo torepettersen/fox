@@ -5,7 +5,10 @@ defmodule FoxWeb.NotificationComponent do
 
   def notifications(assigns) do
     ~H"""
-    <div class="fixed inset-0 flex items-end px-4 py-24 pointer-events-none sm:px-6 sm:items-start" aria-live="assertive">
+    <div
+      class="fixed inset-0 flex items-end px-4 py-24 pointer-events-none sm:px-6 sm:items-start"
+      aria-live="assertive"
+    >
       <div class="w-full flex flex-col items-center space-y-4 sm:items-end">
         <%= for {type, message} <- @flash do %>
           <.notification type={type} message={message} />
@@ -55,7 +58,7 @@ defmodule FoxWeb.NotificationComponent do
 
   defp button_close(assigns) do
     ~H"""
-    <button 
+    <button
       phx-click="lv:clear-flash"
       phx-value-key={@type}
       type="button"

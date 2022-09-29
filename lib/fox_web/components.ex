@@ -6,6 +6,7 @@ defmodule FoxWeb.Components do
   defdelegate form_input(assigns), to: FoxWeb.FormInputComponent
   defdelegate image_list(assigns), to: FoxWeb.ImageList
   defdelegate navbar(assigns), to: FoxWeb.NavbarComponent
+  defdelegate navbar_app(assigns), to: FoxWeb.NavbarComponent
   defdelegate notifications(assigns), to: FoxWeb.NotificationComponent
   defdelegate transactions(assigns), to: FoxWeb.TransactionsComponent
 end

@@ -20,44 +20,44 @@ defmodule FoxWeb.FormInputComponent do
     <div class="space-y-1">
       <.form_label {assigns} />
       <.input {assigns} />
-      <%= error_tag @form, @field %>
+      <%= error_tag(@form, @field) %>
     </div>
     """
   end
 
   defp form_label(%{label: _label} = assigns) do
     ~H"""
-    <%= label @form, @field, @label, class: "block text-sm font-medium text-gray-700" %>
+    <%= label(@form, @field, @label, class: "block text-sm font-medium text-gray-700") %>
     """
   end
 
   defp form_label(assigns) do
     ~H"""
-    <%= label @form, @field, class: "block text-sm font-medium text-gray-700" %>
+    <%= label(@form, @field, class: "block text-sm font-medium text-gray-700") %>
     """
   end
 
   defp input(%{type: :text} = assigns) do
     ~H"""
-    <%= text_input @form, @field, input_assigns(assigns) %>
+    <%= text_input(@form, @field, input_assigns(assigns)) %>
     """
   end
 
   defp input(%{type: :email} = assigns) do
     ~H"""
-    <%= email_input @form, @field, input_assigns(assigns) %>
+    <%= email_input(@form, @field, input_assigns(assigns)) %>
     """
   end
 
   defp input(%{type: :password} = assigns) do
     ~H"""
-    <%= password_input @form, @field, input_assigns(assigns) %>
+    <%= password_input(@form, @field, input_assigns(assigns)) %>
     """
   end
 
   defp input(%{type: :checkbox} = assigns) do
     ~H"""
-    <%= checkbox @form, @field, input_assigns(assigns) %>
+    <%= checkbox(@form, @field, input_assigns(assigns)) %>
     """
   end
 

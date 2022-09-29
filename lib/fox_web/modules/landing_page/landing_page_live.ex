@@ -7,6 +7,7 @@ defmodule FoxWeb.LandingPageLive do
 
   def render(assigns) do
     ~H"""
+
     """
   end
 end
