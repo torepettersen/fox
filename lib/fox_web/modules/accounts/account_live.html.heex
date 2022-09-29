@@ -6,6 +6,15 @@
     </div>
   </header>
   <div class="py-2">
+    <div class="container flex justify-between">
+      <h4 class="text-sm font-light">Total balance</h4>
+      <.form :let={f} for={:form} phx-change="change_range" class="leading-none">
+        <%= select(f, :range, ranges(),
+          class: "text-sm font-semibold text-blue-600 m-0 p-0 pr-4 border-none bg-right text-right",
+          selected: default_range()
+        ) %>
+      </.form>
+    </div>
     <canvas id="account-balance" phx-hook="chart"></canvas>
   </div>
   <div class="container">

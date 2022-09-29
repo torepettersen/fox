@@ -56,6 +56,7 @@ defmodule Fox.MixProject do
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
+      {:timex, "~> 3.7"},
 
       # Dev dependencies
       {:esbuild, "~> 0.4", runtime: Mix.env() == :dev},

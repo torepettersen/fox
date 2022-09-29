@@ -10,13 +10,19 @@ defmodule FoxWeb.AccountLive do
     account = Repo.preload(account, :transactions)
     socket = assign(socket, account: account)
 
-    socket = push_event(socket, "data", build_chart(account))
+    date_range = default_range() |> date_range()
+    socket = push_event(socket, "data", build_chart(account, date_range))
 
     {:ok, socket}
   end
 
-  defp build_chart(account) do
-    date_range = date_range()
+  def handle_event("change_range", params, socket) do
+    date_range = date_range(params["form"]["range"])
+    socket = push_event(socket, "data", build_chart(socket.assigns.account, date_range))
+    {:noreply, socket}
+  end
+
+  defp build_chart(account, date_range) do
     data = graph_data(account, date_range)
 
     %{
@@ -42,10 +48,27 @@ defmodule FoxWeb.AccountLive do
     |> Kernel.*(1.1)
   end
 
-  defp date_range do
+  defp date_range("week") do
     today = Date.utc_today()
-    end_of_last_month = DateHelper.end_of_last_month(today)
-    end_of_month = Date.end_of_month(today)
-    Date.range(end_of_last_month, end_of_month)
+    one_week_ago = Timex.shift(today, weeks: -1)
+    Date.range(one_week_ago, today)
   end
+
+  defp date_range("month") do
+    today = Date.utc_today()
+    three_months_ago = Timex.shift(today, months: -1)
+    Date.range(three_months_ago, today)
+  end
+
+  defp date_range("three_months") do
+    today = Date.utc_today()
+    three_months_ago = Timex.shift(today, months: -3)
+    Date.range(three_months_ago, today)
+  end
+
+  defp ranges do
+    ["Last week": "week", "Last month": "month", "Last three monts": "three_months"]
+  end
+
+  defp default_range, do: "month"
 end
