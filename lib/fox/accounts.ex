@@ -22,4 +22,8 @@ defmodule Fox.Accounts do
     Repo.get(Account, id)
     |> Repo.wrap_result()
   end
+
+  def amount(%Account{opening_booked_amount: amount}) when not is_nil(amount), do: amount
+  def amount(%Account{closing_booked_amount: amount}) when not is_nil(amount), do: amount
+  def amount(%Account{}), do: nil
 end

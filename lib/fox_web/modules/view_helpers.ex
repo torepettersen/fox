@@ -1,5 +1,6 @@
 defmodule FoxWeb.ViewHelpers do
   alias Cldr.Calendar
+  alias Fox.Accounts
   alias Fox.Accounts.Account
   alias FoxWeb.Endpoint
   alias FoxWeb.Router.Helpers, as: Routes
@@ -35,8 +36,12 @@ defmodule FoxWeb.ViewHelpers do
   """
   def format_amount(money, opts \\ [])
 
-  def format_amount(%Account{interim_available_amount: amount}, opts) do
-    format_amount(amount, opts)
+  def format_amount(nil, _opts), do: ""
+
+  def format_amount(%Account{} = account, opts) do
+    account
+    |> Accounts.amount()
+    |> format_amount(opts)
   end
 
   def format_amount(%Money{} = money, opts) do

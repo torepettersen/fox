@@ -2,7 +2,6 @@ defmodule FoxWeb.AccountLive do
   use FoxWeb, :live_view
 
   alias Fox.Accounts
-  alias Fox.DateHelper
   alias Fox.Repo
 
   def mount(%{"id" => id}, _session, socket) do
@@ -40,7 +39,8 @@ defmodule FoxWeb.AccountLive do
   end
 
   defp graph_data(account, date_range) do
-    account.interim_available_amount
+    account
+    |> Accounts.amount()
     |> Accounts.balance_development(account.transactions, date_range)
     |> Enum.map(fn
       %{amount: amount} -> amount |> Decimal.round() |> Decimal.to_integer()

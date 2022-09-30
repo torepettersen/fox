@@ -50,6 +50,8 @@ defmodule Fox.Institutions.Service.RefreshRequisition do
       bic: account["bic"],
       interim_available_amount: find_balance_by_type(account["balances"], "interimAvailable"),
       expected_amount: find_balance_by_type(account["balances"], "expected"),
+      opening_booked_amount: find_balance_by_type(account["balances"], "openingBooked"),
+      closing_booked_amount: find_balance_by_type(account["balances"], "closingBooked"),
       currency: account["currency"],
       owner_name: account["ownerName"],
       nordigen_id: account["id"],

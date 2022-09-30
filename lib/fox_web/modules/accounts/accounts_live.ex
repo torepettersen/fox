@@ -27,7 +27,7 @@ defmodule FoxWeb.AccountsLive do
 
   defp total_amount(accounts) do
     accounts
-    |> Enum.map(& &1.interim_available_amount)
+    |> Enum.map(&Accounts.amount/1)
     |> Enum.reduce(fn amount, result ->
       case Money.add(result, amount) do
         {:ok, new_result} -> new_result

@@ -12,6 +12,8 @@ defmodule Fox.Accounts.Account do
     field :name, :string
     field :interim_available_amount, Money.Ecto.Composite.Type
     field :expected_amount, Money.Ecto.Composite.Type
+    field :closing_booked_amount, Money.Ecto.Composite.Type
+    field :opening_booked_amount, Money.Ecto.Composite.Type
     field :iban, :string
     field :bban, :string
     field :bic, :string
@@ -37,6 +39,8 @@ defmodule Fox.Accounts.Account do
   @fields [
     :interim_available_amount,
     :expected_amount,
+    :closing_booked_amount,
+    :opening_booked_amount,
     :iban,
     :bban,
     :bic,

@@ -6,6 +6,8 @@ defmodule Fox.Repo.Migrations.CreateAccounts do
       add :name, :string
       add :interim_available_amount, :money_with_currency
       add :expected_amount, :money_with_currency
+      add :closing_booked_amount, :money_with_currency
+      add :opening_booked_amount, :money_with_currency
       add :iban, :string
       add :bban, :string
       add :bic, :string
