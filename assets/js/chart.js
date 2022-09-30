@@ -31,7 +31,9 @@ export default {
             grid: {
               display: false
             },
-            display: false,
+            ticks: {
+              maxTicksLimit: 7,
+            },
           },
           y: {
             grid: {

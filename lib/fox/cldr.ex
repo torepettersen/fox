@@ -9,5 +9,5 @@ defmodule Fox.Cldr do
   use Cldr,
     locales: ["en"],
     default_locale: "en",
-    providers: [Cldr.Number, Cldr.Calendar, Money]
+    providers: [Cldr.Number, Cldr.Calendar, Cldr.DateTime, Money]
 end
