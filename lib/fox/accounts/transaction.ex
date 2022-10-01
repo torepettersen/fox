@@ -11,7 +11,7 @@ defmodule Fox.Accounts.Transaction do
     field :status, Ecto.Enum, values: @transaction_statuses
     field :transaction_id, :string
     field :booking_date, :date
-    field :transaction_date, :date
+    field :value_date, :date
     field :amount, Money.Ecto.Composite.Type
     field :type, :string
     field :party, :string
@@ -27,7 +27,7 @@ defmodule Fox.Accounts.Transaction do
     :status,
     :transaction_id,
     :booking_date,
-    :transaction_date,
+    :value_date,
     :amount,
     :user_id
   ]

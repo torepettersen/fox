@@ -19,9 +19,9 @@ defmodule FoxWeb.TransactionsComponent do
   defp transaction(assigns) do
     ~H"""
     <div class="flex flex-col w-fit text-center">
-      <span class="text-xs leading-none"><%= day_of_week(@transaction.transaction_date) %></span>
+      <span class="text-xs leading-none"><%= day_of_week(@transaction.booking_date) %></span>
       <span class="text-lg font-semibold tracking-widest leading-none">
-        <%= @transaction.transaction_date.day %>
+        <%= @transaction.booking_date.day %>
       </span>
     </div>
     <div class="flex items-center">

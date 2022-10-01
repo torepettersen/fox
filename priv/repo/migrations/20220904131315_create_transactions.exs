@@ -6,7 +6,7 @@ defmodule Fox.Repo.Migrations.CreateTransactions do
       add :status, :string
       add :transaction_id, :string
       add :booking_date, :date
-      add :transaction_date, :date
+      add :value_date, :date
       add :amount, :money_with_currency
       add :type, :string
       add :party, :string

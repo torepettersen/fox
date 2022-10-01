@@ -7,10 +7,10 @@ defmodule Fox.Accounts.Services.BalanceDevelopmentTest do
     Clock.set(~D[2022-09-05])
 
     transactions = [
-      build(:transaction, amount: amount(-10_00), transaction_date: ~D[2022-09-04]),
-      build(:transaction, amount: amount(30_00), transaction_date: ~D[2022-09-02]),
-      build(:transaction, amount: amount(-10_00), transaction_date: ~D[2022-09-02]),
-      build(:transaction, amount: amount(-10_00), transaction_date: ~D[2022-09-01])
+      build(:transaction, amount: amount(-10_00), booking_date: ~D[2022-09-04]),
+      build(:transaction, amount: amount(30_00), booking_date: ~D[2022-09-02]),
+      build(:transaction, amount: amount(-10_00), booking_date: ~D[2022-09-02]),
+      build(:transaction, amount: amount(-10_00), booking_date: ~D[2022-09-01])
     ]
 
     range = Date.range(~D[2022-09-01], ~D[2022-09-05])

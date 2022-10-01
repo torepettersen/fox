@@ -85,7 +85,7 @@ defmodule Fox.Institutions.Service.RefreshRequisition do
       status: String.to_atom(transaction["status"]),
       transaction_id: transaction["transactionId"],
       booking_date: transaction["bookingDate"],
-      transaction_date: transaction["valueDate"],
+      value_date: transaction["valueDate"],
       amount: Money.parse(amount, default_currency: currency),
       additional_information: transaction["additionalInformation"]
     }

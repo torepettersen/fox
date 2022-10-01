@@ -32,7 +32,7 @@ defmodule Fox.Accounts.Service.BalanceDevelopment do
 
   defp sum_until(current_amount, transactions, date) do
     {transactions, remaining_transactions} =
-      Enum.split_while(transactions, &DateHelper.after?(&1.transaction_date, date))
+      Enum.split_while(transactions, &DateHelper.after?(&1.booking_date, date))
 
     amounts = transactions |> Enum.map(& &1.amount)
 

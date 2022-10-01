@@ -57,7 +57,7 @@ defmodule Fox.Factory do
       status: :booked,
       transaction_id: sequence(:transaction_id, &"0116_0021893786076_000000#{&1}"),
       booking_date: ~D[2022-09-01],
-      transaction_date: ~D[2022-09-01],
+      value_date: ~D[2022-09-01],
       amount: Money.new(100_00, :NOK),
       account: build(:account),
       user: Repo.get_user() || build(:user)
